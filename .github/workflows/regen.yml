@@ -1,0 +1,31 @@
+name: regen tool catalog
+
+# Regenerates skills/bloom-mcp/references/tools.md from the PUBLIC @bloom/sdk
+# package and opens a PR when it changes. Public -> public only; no access to
+# any private repo, no secrets beyond the default GITHUB_TOKEN.
+
+on:
+  schedule:
+    - cron: "0 6 * * 1" # Mondays 06:00 UTC
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  regen:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - run: bun install --frozen-lockfile || bun install
+      - run: bun run generate
+      - uses: peter-evans/create-pull-request@v6
+        with:
+          branch: regen/tool-catalog
+          title: "chore: regenerate Bloom MCP tool catalog"
+          commit-message: "chore: regenerate tool catalog from @bloom/sdk"
+          body: |
+            Automated regeneration of `skills/bloom-mcp/references/tools.md` from the
+            latest public `@bloom/sdk` operation manifest. Review the diff and merge.

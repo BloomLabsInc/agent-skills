@@ -1,0 +1,8 @@
+{
+  "name": "bloom-agent-skills",
+  "skills": [
+    "./skills/bloom",
+    "./skills/bloom-mcp",
+    "./skills/bloom-visual-planning"
+  ]
+}

@@ -1,0 +1,23 @@
+name: gitleaks
+
+# Secret-scan every push/PR. Belt-and-suspenders: this repo is public and holds
+# only skill docs + example frames, so a leak should be impossible — this catches
+# a bad hand-edit before it merges.
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
