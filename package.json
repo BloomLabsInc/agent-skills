@@ -3,15 +3,17 @@
   "version": "0.1.0",
   "private": true,
   "description": "Bloom agent skills — teach any coding agent to drive the Bloom MCP/CLI",
-  "repository": { "type": "git", "url": "https://github.com/BloomLabsInc/agent-skills" },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BloomLabsInc/agent-skills"
+  },
   "license": "MIT",
   "scripts": {
-    "generate": "bun scripts/generate.ts",
+    "check": "bun scripts/check.ts",
     "changeset": "changeset",
     "version": "changeset version"
   },
   "devDependencies": {
-    "@bloom/sdk": "^0.1.0",
     "@changesets/changelog-github": "^0.7.0",
     "@changesets/cli": "^2.30.0"
   }

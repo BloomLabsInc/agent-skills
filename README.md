@@ -12,29 +12,31 @@ Pick the skills and the agents to install them on. The [`bloom` CLI](https://www
 
 ## What's inside
 
-| Skill | Use it when |
-| --- | --- |
-| [`bloom`](skills/bloom/SKILL.md) | Working in a Bloom project — routes you to the right skill below. |
-| [`bloom-mcp`](skills/bloom-mcp/SKILL.md) | Calling Bloom MCP tools. The tool model, guardrails, and the full [tool catalog](skills/bloom-mcp/references/tools.md). |
-| [`bloom-visual-planning`](skills/bloom-visual-planning/SKILL.md) | Planning a feature or iterating on a design — build the plan as a live canvas frame instead of writing prose. |
+| Skill                                                            | Use it when                                                                                                            |
+| ---------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| [`bloom`](skills/bloom/SKILL.md)                                 | Working in a Bloom project — routes you to the right skill below.                                                      |
+| [`bloom-mcp`](skills/bloom-mcp/SKILL.md)                         | Calling Bloom MCP tools. Fetches the current operating guide from the connected server.                                |
+| [`bloom-visual-planning`](skills/bloom-visual-planning/SKILL.md) | Building an interactive explanation or complex plan on the canvas. Fetches the current workflow and reviewed examples. |
 
-Each skill is a folder with a `SKILL.md` plus any reference docs and example frames it bundles. `skills add` copies the whole folder.
+Each installed skill is deliberately small. It bootstraps the full, version-matched skill from Bloom's deployed MCP instead of copying guidance that can drift from the server.
 
-## How this stays in sync (and stays safe)
+## How this stays in sync
 
-The tool catalog ([`bloom-mcp/references/tools.md`](skills/bloom-mcp/references/tools.md)) is **generated** from the public [`@bloom/sdk`](https://www.npmjs.com/package/@bloom/sdk) package's operation manifest:
+The connected Bloom MCP is the authority. Its `skills` tool returns the current guide and an allowlisted resource manifest. These public packages are stable bootstrap pointers, so updating the server does not leave installed agents with a conflicting tool catalog or visual-planning system.
+
+Validate that the bootstraps remain thin and free of known stale conventions:
 
 ```bash
-bun run generate
+bun run check
 ```
 
-This repo is the **single source of truth** for Bloom's skills, and it reads **only public npm** — it has no access to any private Bloom repository, and nothing is ever pushed *into* here from one. A scheduled workflow re-runs the generator and opens a PR when the API surface changes.
+The validation is local and requires no Bloom credentials or private source access.
 
 ## Contributing
 
 - Skills follow [`writing-great-skills`](https://github.com/mattpocock/skills/tree/main/skills/productivity/writing-great-skills) — lean, one source of truth, progressive disclosure.
-- Don't hand-edit generated files (they carry a `GENERATED` banner); change `scripts/generate.ts` instead.
-- `bloom-visual-planning` is a living skill — new archetypes and example frames welcome.
+- Keep these skills as routing layers. New operational guidance, patterns, and examples belong in the deployed canonical bundles.
+- Do not add copied tool catalogs, renderer defaults, or canvas paths here.
 
 ## License
 
